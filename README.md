@@ -2,7 +2,7 @@
 
 Nibbly Nutrition Tracker is a self-hosted service that helps users easily **track their nutrition** by weighing and logging food. Simply weigh your food, input it into the app, and instantly receive detailed nutrition data such as calories, macros and fiber.
 
-<img src="https://github.com/imivi/nutrition-tracker/blob/main/docs/screenshot.jpg" alt="Screenshot">
+<img src="https://github.com/imivi/nutrition-tracker/blob/main/docs/screenshot1.jpg" alt="Screenshot">
 
 <img src="https://github.com/imivi/nutrition-tracker/blob/main/docs/screenshot2.jpg" alt="Screenshot">
 
