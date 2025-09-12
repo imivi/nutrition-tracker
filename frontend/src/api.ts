@@ -1,0 +1,118 @@
+import axios from "axios"
+import type { Day, User } from "./types"
+import { env } from "./env"
+import type { Food } from "./types.backend"
+
+
+axios.defaults.baseURL = env.VITE_API_URL
+
+axios.defaults.withCredentials = true // Required for cookies to work
+// axios.defaults.validateStatus = status => (status) >= 200 && status <= 500;
+
+// type ApiResponse<T> = {
+//     data: T
+//     error: any | null
+// }
+
+async function createFoods(foods: Omit<Food, "id">[]): Promise<Day[] | null> {
+    const response = await axios.post("/foods", foods)
+    const ok = response.status >= 200 && response.status < 400
+    return ok ? response.data : null
+}
+
+async function getDay(day: string): Promise<Day | null> {
+    const response = await axios.get("/day/" + day)
+    const ok = response.status >= 200 && response.status < 400
+    return ok ? response.data : null
+}
+
+async function setDay(day: Day): Promise<boolean> {
+    const response = await axios.put("/day/" + day.date, day)
+    const ok = response.status >= 200 && response.status < 400
+    return ok
+}
+
+async function getFoodById(food_id: string) {
+    const response = await axios.put<Food>("/food/" + food_id)
+    return response.data
+}
+
+async function getAllFoods() {
+    const response = await axios.get<Food[]>("/foods")
+    return response.data
+}
+
+async function setAllFoods(foods: Omit<Food, "id">[]) {
+    const response = await axios.put<Food[]>("/foods", foods)
+    return response.data
+}
+
+async function checkOnboarding(): Promise<boolean> {
+    const response = await axios.get("/onboard")
+    return response.data
+}
+
+async function deleteFood(foodId: string): Promise<boolean> {
+    const response = await axios.delete("/foods/" + foodId)
+    return response.data
+}
+
+async function updateFood(food: Food): Promise<boolean> {
+    const response = await axios.patch("/foods/" + food.id, food)
+    return response.data
+}
+
+async function signup(username: string, password: string): Promise<User | null> {
+    const response = await axios.post("/auth/signup", {
+        username,
+        password,
+    })
+    const ok = response.status >= 200 && response.status < 400
+    return ok ? response.data : null
+}
+
+async function loginWithCredentials(username: string, password: string): Promise<{ user: User | null, error: any | null }> {
+    try {
+        const response = await axios.post("/auth/login", {
+            username,
+            password,
+        })
+        return { user: response.data, error: null }
+    }
+    catch (error) {
+        return { user: null, error: (error as any).response.data.message }
+    }
+}
+
+async function loginWithCookies(): Promise<User | null> {
+    try {
+        const response = await axios.get("/auth/user")
+        const ok = response.status >= 200 && response.status < 400
+        return ok ? response.data : null
+    }
+    catch (error) {
+        return null
+    }
+}
+
+async function logout(): Promise<boolean> {
+    const response = await axios.post("/auth/logout")
+    const ok = response.status >= 200 && response.status < 400
+    return ok
+}
+
+export const api = {
+    getDay,
+    setDay,
+    getFoodById,
+    getAllFoods,
+    setAllFoods,
+    checkOnboarding,
+    signup,
+    loginWithCredentials,
+    loginWithCookies,
+    logout,
+    createFoods,
+    deleteFood,
+    updateFood,
+}

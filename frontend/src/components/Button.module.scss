@@ -1,0 +1,26 @@
+.Button {
+    padding: .2em .4em;
+    opacity: 0.7;
+    font-family: inherit;
+    font-size: inherit;
+
+    &:hover {
+        background-color: rgba(0, 100, 0, 0.1);
+        cursor: pointer;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &[data-unstyled=true] {
+        border: none;
+        background: none;
+    }
+
+    &[data-unstyled=false] {
+        border: 1px solid darkgreen;
+        background: none;
+        border-radius: 4px;
+    }
+}

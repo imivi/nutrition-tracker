@@ -1,0 +1,139 @@
+.CurrentDay {
+    margin: 0 auto;
+    margin-top: 10px;
+    display: grid;
+    row-gap: min(2vh, 10px);
+    margin-bottom: 20px;
+
+    main {
+        max-width: min(100vw, 1000px);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: min(20px, 2vw);
+        margin: 0 auto;
+
+        @media screen and (max-width: 1000px) {
+            max-width: min(100vw, 500px);
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &>header {
+        padding: 10px;
+        display: grid;
+        gap: .5em;
+        font-size: 1rem;
+        margin: 0;
+        text-align: center;
+        font-family: 'Gabarito', system-ui;
+
+        h2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: darkgreen;
+        }
+
+        small:nth-of-type(1) {
+            color: darkgreen;
+        }
+
+        small:nth-of-type(2) {
+            color: brown;
+        }
+    }
+
+    footer.debug {
+        display: grid;
+        align-items: center;
+        gap: 5px;
+        margin: 5px 0;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    fieldset.workouts {
+        margin: 20px 0;
+        padding: 0;
+        border: none;
+        border-radius: 5px;
+        display: grid;
+        gap: 5px;
+        // background-color: #f4f4f4;
+        background-color: rgba($color: darkgreen, $alpha: 0.05);
+        padding: 10px;
+        max-width: min(90vw, 20rem);
+
+        label {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            align-items: center;
+
+            @media screen and (max-width:20rem) {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        label span {
+            padding: .2em .4em;
+        }
+
+        textarea,
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            // background-color: rgba($color: darkgreen, $alpha: 0.1);
+            color: darkgreen;
+            border: 1px solid darkgreen;
+            border-radius: 3px;
+            // border-bottom: 1px solid #ccc;
+            // background-color: white;
+            // border: 1px solid transparent;
+            padding: .3em .5em;
+        }
+    }
+}
+
+.textarea_container {
+    position: relative;
+    width: min(90vw, 500px);
+    margin: 0 auto;
+
+    small {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        color: #999;
+    }
+}
+
+.table_container {
+    max-width: 90vw;
+    overflow: auto;
+    margin: 0 auto;
+}
+
+table.MacrosTable {
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+
+    th,
+    td {
+        padding: 4px 8px;
+        text-align: right;
+        border: 1px solid #ddd;
+    }
+
+    th:first-child,
+    td:first-child {
+        text-align: left;
+    }
+}

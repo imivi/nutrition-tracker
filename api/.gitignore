@@ -1,0 +1,6 @@
+node_modules
+dist
+.env
+database/dev
+pnpm-workspace.yaml
+untracked

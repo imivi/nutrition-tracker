@@ -1,0 +1,23 @@
+.Signup {
+    max-width: 20rem;
+    margin: 20px auto;
+
+    fieldset {
+        display: grid;
+    }
+
+    label {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    footer {
+        display: grid;
+        justify-content: flex-start;
+    }
+
+    a {
+        color: darkgreen;
+    }
+}
