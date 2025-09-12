@@ -1,7 +1,7 @@
 import s from "./Foods.module.scss"
 
 import { useFoods } from "../hooks/useFoods"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import z from "zod"
 import Button from "./Button"
 import { FaArrowDown, FaArrowUp, FaEdit, FaTrash } from "react-icons/fa"
@@ -30,12 +30,18 @@ export default function Foods({ }: Props) {
     const [sortAsc, setSortAsc] = useState(true)
 
     function sortFoods(a: Food, b: Food): number {
-        const order = sortAsc ? 1 : -1
         if (sortBy === "name")
-            return (a.name < b.name ? -1 : 1) * order
+            return (a.name < b.name ? -1 : 1)
         else
-            return (a.added_on < b.added_on ? -1 : 1) * order
+            return (a.added_on < b.added_on ? -1 : 1)
     }
+
+    const sortedFoods = useMemo(() => {
+        const foods = allFoods.sort(sortFoods)
+        if (sortAsc)
+            return foods
+        return [...foods].reverse()
+    }, [allFoods, sortBy, sortAsc, sortFoods])
 
     const newFoodSchema = z.object({
         name: z.string().min(3),
@@ -120,63 +126,69 @@ export default function Foods({ }: Props) {
                 <div className={s.bg} onClick={() => setShowEditModal(false)} />
             </div>
 
-            <header>
-                {/* {allFoods.length} food{allFoods.length > 1 && "s"} */}
-                <label>
-                    Sort by&nbsp;
-                    <select onChange={e => setSortBy(e.target.value as typeof sortBy)}>
-                        <option value="name">Name</option>
-                        <option value="date">Added on</option>
-                    </select>
-                </label>
-                <Button onClick={() => setSortAsc(!sortAsc)} unstyled>
-                    {sortAsc ? <FaArrowUp /> : <FaArrowDown />}
-                </Button>
-            </header>
+            {
+                allFoods.length > 0 &&
+                <header>
+                    {/* {allFoods.length} food{allFoods.length > 1 && "s"} */}
+                    <label>
+                        Sort by&nbsp;
+                        <select onChange={e => setSortBy(e.target.value as typeof sortBy)}>
+                            <option value="name">Name</option>
+                            <option value="date">Added on</option>
+                        </select>
+                    </label>
+                    <Button onClick={() => setSortAsc(!sortAsc)} unstyled>
+                        {sortAsc ? <FaArrowUp /> : <FaArrowDown />}
+                    </Button>
+                </header>
+            }
 
-            <div className={s.table_container}>
-                <Table>
-                    <thead>
-                        <tr>
-                            {/* <th>id</th> */}
-                            <th>Name</th>
-                            <th>Kcal</th>
-                            <th>Carbs</th>
-                            <th>Protein</th>
-                            <th>Fats</th>
-                            <th>Fiber</th>
-                            <th>Added&nbsp;on</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {allFoods.sort(sortFoods).map(food => (
-                            <tr key={food.id}>
-                                {/* <td>{food.id}</td> */}
-                                <td>
-                                    <Button type="button" unstyled onClick={() => {
-                                        if (window.confirm("Delete food " + food.name + "?"))
-                                            deleteFood(food.id)
-                                    }}>
-                                        <FaTrash size={16} />
-                                    </Button>
-                                    &nbsp;
-                                    <Button type="button" unstyled onClick={() => editFood(food)}>
-                                        <FaEdit size={16} />
-                                    </Button>
-                                    &nbsp;
-                                    {food.name}
-                                </td>
-                                <td>{food.calories}</td>
-                                <td>{food.carbs}</td>
-                                <td>{food.protein}</td>
-                                <td>{food.fats}</td>
-                                <td>{food.fiber}</td>
-                                <td>{food.added_on}</td>
+            {
+                allFoods.length > 0 &&
+                <div className={s.table_container}>
+                    <Table>
+                        <thead>
+                            <tr>
+                                {/* <th>id</th> */}
+                                <th>Name</th>
+                                <th>Kcal</th>
+                                <th>Carbs</th>
+                                <th>Protein</th>
+                                <th>Fats</th>
+                                <th>Fiber</th>
+                                <th>Added&nbsp;on</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {sortedFoods.map(food => (
+                                <tr key={food.id}>
+                                    {/* <td>{food.id}</td> */}
+                                    <td>
+                                        <Button type="button" unstyled onClick={() => {
+                                            if (window.confirm("Delete food " + food.name + "?"))
+                                                deleteFood(food.id)
+                                        }}>
+                                            <FaTrash size={16} />
+                                        </Button>
+                                        &nbsp;
+                                        <Button type="button" unstyled onClick={() => editFood(food)}>
+                                            <FaEdit size={16} />
+                                        </Button>
+                                        &nbsp;
+                                        {food.name}
+                                    </td>
+                                    <td>{food.calories}</td>
+                                    <td>{food.carbs}</td>
+                                    <td>{food.protein}</td>
+                                    <td>{food.fats}</td>
+                                    <td>{food.fiber}</td>
+                                    <td>{food.added_on}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+            }
 
             <form onSubmit={e => { e.preventDefault(); onSubmit() }}>
                 <fieldset className={s.new_food}>

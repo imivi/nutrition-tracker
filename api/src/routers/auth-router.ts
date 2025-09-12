@@ -13,18 +13,14 @@ import status from "http-status"
 const router = Express.Router()
 
 
-router.get("/", async (req, res) => {
-    res.send("Auth router")
-})
 
 
 // Logout by deleting the current session
 router.post("/logout", userGuardMiddleware, async (req: any, res) => {
-    console.log("/logout")
     const sid = req.sid
 
     if (!sid) {
-        res.json(status.BAD_REQUEST).json({ message: "Invalid request" })
+        res.status(status.BAD_REQUEST).json({ message: "Invalid request" })
         return
     }
 
@@ -35,7 +31,7 @@ router.post("/logout", userGuardMiddleware, async (req: any, res) => {
         return
     }
 
-    res.status(201).json({ message: "Logged out" })
+    res.json({ message: "Logged out" })
 })
 
 
@@ -93,15 +89,6 @@ router.post("/signup", async (req, res) => {
         created_on: newUser.created_on,
         updated_on: newUser.updated_on,
     })
-
-    // else {
-    //     if (Array.isArray(result.data))
-    //         await dbService.addFoods(result.data)
-    //     else
-    //         await dbService.addFood(result.data)
-    //     res.status(201).json({ message: "ok" })
-    // }
-
 })
 
 
@@ -122,19 +109,18 @@ router.post("/login", async (req, res) => {
     const user = await userService.getUserByUsername(username)
 
     if (!user) {
-        res.status(404).json({ message: "No user found with username: " + username })
+        res.status(403).json({ message: "Invalid username/password combination" })
         return
     }
 
     const validPassword = checkPasswordHash(password, user.password_hash)
 
     if (!validPassword) {
-        res.status(400).json({ message: "Invalid password" })
+        res.status(403).json({ message: "Invalid username/password combination" })
         return
     }
 
     // Check if session already exists
-    // TODO - fix
     const { sid } = req.cookies
     if (sid) {
         const session = await sessionService.getSession(sid)
@@ -163,7 +149,6 @@ router.post("/login", async (req, res) => {
     // Set cookie with session id
     res.cookie(sessionIdCookie, newSession.id, {
         httpOnly: true, // XSS protection
-        sameSite: env.DEV ? "none" : "lax", // CSRF protection
         secure: !env.DEV,
         expires: new Date(newSession.expires_on),
     })

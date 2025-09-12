@@ -7,12 +7,7 @@ import type { Food } from "./types.backend"
 axios.defaults.baseURL = env.VITE_API_URL
 
 axios.defaults.withCredentials = true // Required for cookies to work
-// axios.defaults.validateStatus = status => (status) >= 200 && status <= 500;
 
-// type ApiResponse<T> = {
-//     data: T
-//     error: any | null
-// }
 
 async function createFoods(foods: Omit<Food, "id">[]): Promise<Day[] | null> {
     const response = await axios.post("/foods", foods)
@@ -62,26 +57,20 @@ async function updateFood(food: Food): Promise<boolean> {
     return response.data
 }
 
-async function signup(username: string, password: string): Promise<User | null> {
+async function signup(username: string, password: string): Promise<User> {
     const response = await axios.post("/auth/signup", {
         username,
         password,
     })
-    const ok = response.status >= 200 && response.status < 400
-    return ok ? response.data : null
+    return response.data
 }
 
-async function loginWithCredentials(username: string, password: string): Promise<{ user: User | null, error: any | null }> {
-    try {
-        const response = await axios.post("/auth/login", {
-            username,
-            password,
-        })
-        return { user: response.data, error: null }
-    }
-    catch (error) {
-        return { user: null, error: (error as any).response.data.message }
-    }
+async function loginWithCredentials(username: string, password: string): Promise<User> {
+    const response = await axios.post("/auth/login", {
+        username,
+        password,
+    })
+    return response.data
 }
 
 async function loginWithCookies(): Promise<User | null> {

@@ -15,22 +15,30 @@ export default function Signup({ }: Props) {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
+    const [errorMsg, setErrorMsg] = useState("")
+
     const navigate = useNavigate()
     // const { setUser } = useUserStore()
 
     async function onSubmit() {
-        const user = await api.signup(username, password)
-        if (user) {
-            // Reset form
-            setUsername("")
-            setPassword("")
+        setErrorMsg("")
 
-            navigate("/login")
-            // setUser(user)
-            // navigate("/")
+        try {
+            const user = await api.signup(username, password)
+            if (user) {
+                // Reset form
+                setUsername("")
+                setPassword("")
+
+                navigate("/login")
+                // setUser(user)
+                // navigate("/")
+            }
         }
-        else {
-            console.log("Error signing up, check the network tab")
+        catch (error) {
+            console.error(error)
+            console.log("Error signing up")
+            setErrorMsg((error as any).response.data.message)
         }
     }
 
@@ -53,6 +61,9 @@ export default function Signup({ }: Props) {
                     <Button type="submit">Sign up</Button>
                     <Link to="/login">or login</Link>
                 </footer>
+
+                {errorMsg && <p className={s.error_msg}>Error: {errorMsg}</p>}
+
             </form>
 
         </div>

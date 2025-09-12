@@ -1,9 +1,13 @@
 .Login {
-    max-width: 20rem;
-    margin: 20px auto;
-    display: grid;
-    justify-content: center;
-    align-items: center;
+
+    form {
+        max-width: 20rem;
+        margin: 20px auto;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
 
     fieldset {
         display: grid;
@@ -16,11 +20,19 @@
     }
 
     footer {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
     }
 
     a {
         color: darkgreen;
     }
+}
+
+.error_msg {
+    color: brown;
+    text-align: center;
 }

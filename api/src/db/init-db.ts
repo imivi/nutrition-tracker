@@ -4,19 +4,19 @@ export async function initDb() {
     console.log("Initializing database...")
 
     await schemaService.createUserTable()
-    console.log("OK: createUserTable")
+    console.log("✅ createUserTable")
 
     await schemaService.createSessionTable()
-    console.log("OK: createSessionTable")
+    console.log("✅ createSessionTable")
 
     await schemaService.createFoodTable()
-    console.log("OK: createFoodTable")
+    console.log("✅ createFoodTable")
 
     await schemaService.createDayEntryTable()
-    console.log("OK: createDayEntryTable")
+    console.log("✅ createDayEntryTable")
 
     await schemaService.createDayTable()
-    console.log("OK: createDayTable")
+    console.log("✅ createDayTable")
 
-    console.info("[OK] initialize database")
+    console.info("✅ initialize database")
 }

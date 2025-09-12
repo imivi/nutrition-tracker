@@ -4,6 +4,8 @@ Nibbly Nutrition Tracker is a self-hosted service that helps users easily **trac
 
 <img src="https://github.com/imivi/nutrition-tracker/blob/main/docs/screenshot.jpg" alt="Screenshot">
 
+<img src="https://github.com/imivi/nutrition-tracker/blob/main/docs/screenshot2.jpg" alt="Screenshot">
+
 ❗**Note** Nibbly Nutrition Tracker is in active development, and at this time users are required to enter their own foods before using the service.
 
 ## Features

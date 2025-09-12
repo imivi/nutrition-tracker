@@ -29,7 +29,7 @@ app.use("/", (req, res) => { res.json({ msg: "Go to /api" }) })
 app.listen(4000, async () => {
     const mode = env.DEV ? "DEVELOPMENT" : "PRODUCTION"
     await initDb()
-    console.log(`Express running on port 4000...`)
-    console.log(`mode = ${mode}`)
-    console.log(`guard_routes = ${env.GUARD_ROUTES.toString().toUpperCase()}`)
+    console.log(`➡️  Express running on internal port 4000...`)
+    console.log(`➡️  mode = ${mode}`)
+    console.log(`➡️  guard_routes = ${env.GUARD_ROUTES.toString().toUpperCase()}`)
 })
